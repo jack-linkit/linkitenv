@@ -1,13 +1,38 @@
 #!/bin/bash
-
-if [ $# -eq 0 ] ; then 
-    search_district > temp.txt
-else
-    search_district "$1" > temp.txt 
+if ! command -v jq &> /dev/null
+then
+    echo "jq could not be found. Please install it to continue."
+    exit
 fi
 
-cat temp.txt
+LINKIT_DISTRICTS_PATH=$(jq -r '.linkitDistrictsFile' ../config.json)
 
-cat temp.txt|awk 'NR>1 {print p} {p=$0} END {ORS=""; print p}' | pbcopy
+if [ -z "$LINKIT_DISTRICTS_PATH" ]; then
+    echo "Error: \$LINKIT_DISTRICTS_PATH is not set."
+    exit 1
+fi
 
-rm temp.txt
+if ! test -f "$LINKIT_DISTRICTS_PATH"; then
+    echo "Error: File does not exist: $LINKIT_DISTRICTS_PATH"
+    exit 1
+fi
+
+
+if [ -z "$LINKIT_DISTRICTS_PATH" ]; then
+    echo "Error: \$LINKIT_DISTRICTS_PATH is not set."
+    exit 1
+fi
+
+if ! test -f "$LINKIT_DISTRICTS_PATH"; then
+    echo "Error: File does not exist: $LINKIT_DISTRICTS_PATH"
+    exit 1
+fi
+
+search_term=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+
+output=$(awk -F\t "tolower(\$1) ~ /$search_term/ || tolower(\$3) ~ /$search_term/ {print \$2}" "$LINKIT_DISTRICTS_PATH")
+if [ -z "$output" ]; then
+    echo "No matching district found."
+    exit 1
+fi
+echo "$output"
