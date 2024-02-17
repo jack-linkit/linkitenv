@@ -1,0 +1,7 @@
+#!/usr/bin/expect
+
+spawn sftp jack@ftp.linkit.com
+expect "jack@ftp.linkit.com's password: "
+send "EWw\}f3-a*Fx7A\[3S\r"
+interact
+

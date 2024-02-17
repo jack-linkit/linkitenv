@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $# -eq 0 ] ; then 
+    search_district > temp.txt
+else
+    search_district "$1" > temp.txt 
+fi
+
+cat temp.txt
+
+cat temp.txt|awk 'NR>1 {print p} {p=$0} END {ORS=""; print p}' | pbcopy
+
+rm temp.txt

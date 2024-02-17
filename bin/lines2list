@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Initialize an empty string to store input
+input=""
+delimiter=","
+
+usage() {
+  echo "Usage: $0 [-d <delimiter>]"
+  echo "Options:"
+  echo "  -d <delimiter>   Specify the delimiter character (default is ',')"
+  exit 1
+}
+
+# Parse command-line options
+while getopts "d:" opt; do
+  case $opt in
+    d) delimiter="$OPTARG";;
+    *) usage;;
+  esac
+done
+shift $((OPTIND - 1))
+
+
+# Read input until "EOF" is entered
+while IFS= read -r line; do
+  if [ "$line" = "EOF" ]; then
+    break
+  fi
+  input="${input}${line}
+"
+done
+
+input=$(echo -n "$input")
+
+# Process the input as needed
+# For example, replace line breaks with commas and copy to the clipboard
+echo -n "$input" | tr '\n' $delimiter
