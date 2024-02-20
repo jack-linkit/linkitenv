@@ -5,7 +5,7 @@ then
     exit
 fi
 
-LINKIT_DISTRICTS_PATH=$(jq -r '.linkitDistrictsFile' ../config.json)
+LINKIT_DISTRICTS_PATH=$(jq -r '.linkitDistrictsFile' $HOME/WorkRoot/config.json)
 
 if [ -z "$LINKIT_DISTRICTS_PATH" ]; then
     echo "Error: \$LINKIT_DISTRICTS_PATH is not set."
@@ -30,9 +30,22 @@ fi
 
 search_term=$(echo "$1" | tr '[:upper:]' '[:lower:]')
 
-output=$(awk -F\t "tolower(\$1) ~ /$search_term/ || tolower(\$3) ~ /$search_term/ {print \$2}" "$LINKIT_DISTRICTS_PATH")
-if [ -z "$output" ]; then
-    echo "No matching district found."
-    exit 1
-fi
-echo "$output"
+output=$(awk -F'\t' -v search_term="$search_term" '
+    tolower($1) ~ search_term || tolower($3) ~ search_term {
+        if (matches != "") {
+            matches = matches "\n" $2
+        } else {
+            matches = $2
+        }
+    }
+    END {
+        if (matches == "") {
+            print "No matching district found."
+            exit 1
+        }
+        printf "%s", matches
+    }
+' "$LINKIT_DISTRICTS_PATH")
+
+echo -n "$output"
+
