@@ -1,0 +1,11 @@
+#!/usr/bin/expect
+
+set username [exec bash -c "cat $env(HOME)/linkitenv/config.json | jq -r '.ftpUserName'"]
+
+set password [exec bash -c "cat $env(HOME)/linkitenv/config.json | jq -r '.ftpPassword'"]
+
+spawn sftp $username
+expect "jack@ftp.linkit.com's password: "
+send "$password\r"
+interact
+
