@@ -5,7 +5,7 @@ then
     exit
 fi
 
-LINKIT_DISTRICTS_PATH=$(jq -r '.linkitDistrictsFile' $HOME/WorkRoot/config.json)
+LINKIT_DISTRICTS_PATH=$(jq -r '.linkitDistrictsFile' $HOME/linkitenv/config.json)
 
 if [ -z "$LINKIT_DISTRICTS_PATH" ]; then
     echo "Error: \$LINKIT_DISTRICTS_PATH is not set."
