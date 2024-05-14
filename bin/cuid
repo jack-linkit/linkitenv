@@ -1,3 +1,3 @@
 USER_ID=$(jq -r '.userID' $HOME/linkitenv/config.json)
 
-printf "%s" "$USER_ID" | pbcopy
+echo -n $USER_ID
