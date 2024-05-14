@@ -30,12 +30,12 @@ fi
 
 search_term=$(echo "$1" | tr '[:upper:]' '[:lower:]')
 
-output=$(awk -F'\t' -v search_term="$search_term" '
-    tolower($1) ~ search_term || tolower($3) ~ search_term {
+output=$(awk -F',' -v search_term="$search_term" '
+    tolower($1) ~ search_term || tolower($4) ~ search_term {
         if (matches != "") {
-            matches = matches "\n" $2
+            matches = matches "\n" $3
         } else {
-            matches = $2
+            matches = $3
         }
     }
     END {
@@ -47,5 +47,5 @@ output=$(awk -F'\t' -v search_term="$search_term" '
     }
 ' "$LINKIT_DISTRICTS_PATH")
 
-echo -n "$output"
+echo -n "$output" | tr -d '"'
 
