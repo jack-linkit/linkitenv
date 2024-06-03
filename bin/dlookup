@@ -31,8 +31,9 @@ fi
 search_term=$(echo "$1" | tr '[:upper:]' '[:lower:]')
 
 output=$(awk -F',' -v search_term="$search_term" '
-    tolower($1) ~ search_term || tolower($4) ~ search_term {
-        if (matches != "") {
+    NR > 1 && (tolower($1) ~ search_term || tolower($4) ~ search_term) {
+        gsub(/"/, "", $3)
+        if (matches != "" && $3 != "") {
             matches = matches "\n" $3
         } else {
             matches = $3
