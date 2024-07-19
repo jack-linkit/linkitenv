@@ -1,4 +1,4 @@
-#!/usr/bin/expect
+#!/home/linuxbrew/.linuxbrew/bin/expect
 
 set username [exec bash -c "cat $env(HOME)/linkitenv/config.json | jq -r '.ftpUserName'"]
 
