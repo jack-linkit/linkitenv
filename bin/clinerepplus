@@ -1,2 +1,2 @@
 #!/bin/bash
-pbpaste | awk '1; END {print ""}' | python3.10 ~/linkitenv/scripts/python/linerepplus.py
+pbpaste | awk '1; END {print ""}' | python3.10 ~/linkitenv/scripts/python/linerepplus.py | pbcopy
