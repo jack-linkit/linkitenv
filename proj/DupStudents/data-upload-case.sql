@@ -55,7 +55,7 @@ ON
     s1.DistrictID = s2.DistrictID
     AND (s1.AltCode = s2.AltCode)
     AND s1.Studentid != s2.StudentID
-    AND s1.FullName = s2.FullName
+    AND s1.FullName != s2.FullName
 JOIN 
     District d WITH (NOLOCK) ON s1.DistrictID = d.DistrictID
 WHERE 
