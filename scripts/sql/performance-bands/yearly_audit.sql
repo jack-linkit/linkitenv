@@ -9,29 +9,42 @@ with currentbands(dsc_id, dsc_name) as (
 		join performancebandvirtualtest pbvt with (nolock)
 			on vt.virtualtestid = pbvt.virtualtestid
 	where pbvt.[level] = 0
-		and vt.stateid = 49
 		and vt.datasetoriginid = 11
 		and vt.name like '2023-24%'
 	group by vt.datasetcategoryid, dsc.datasetcategoryname
-)
-select
+),
+data_table(dsc_id, dsc_name, test_created, bands_configured, bands_applied, st_name) as (
+select distinct
 	bands.dsc_id as 'datasetcategoryid',
 	bands.dsc_name 'dataset name',
 	case when count(vt.virtualtestid)> 0 then 'Y' else 'N' end as '24-25 test created',
-	case when count(pbc.performancebandconfigurationid) > 0 then 'Y' else 'N' end as '24-25 enterprise configured',
-	STRING_AGG(s.name, ','),
-	case when count(pbvt.performancebandvirtualtestid) > 0 then 'Y' else 'N' end as '24-25 bands applied'
+	case when count(pbc.performancebandconfigurationid) > 0 then 'Y' else 'N' end as '24-25 bands configured',
+	case when count(pbvt.performancebandvirtualtestid) > 0 then 'Y' else 'N' end as '24-25 bands applied',
+    case when [State].Name is null and count(pbc.PerformanceBandConfigurationID) > 0 then 'Enterprise' else [State].name end
 from currentbands bands with (nolock)
-	left join virtualtest vt with (nolock) on vt.datasetcategoryid = bands.dsc_id and vt.stateid = 49 and vt.datasetoriginid = 11 and vt.name like '2024-25%'
+	left join virtualtest vt on vt.datasetcategoryid = bands.dsc_id and vt.datasetoriginid = 11 and vt.name like '2024-25%'
 	left join performancebandvirtualtest pbvt with (nolock) on vt.virtualtestid = pbvt.virtualtestid and pbvt.level = 0 
 	left join performancebandconfiguration pbc with (nolock) on pbc.datasetcategoryid = vt.datasetcategoryid and pbc.year = '2024-25' and pbc.DistrictID is null
-	left join state s with (nolock) on vt.stateid = s.stateid
-group by bands.dsc_id, bands.dsc_name
-order by 3 desc, 4 desc, 5 desc;
+    left join [state] with (nolock) on pbc.stateid = [State].stateid
+group by bands.dsc_id, bands.dsc_name, [State].name
+-- order by 3 desc, 4 desc, 5 desc, 2 desc
+)
+select 
+    dsc_id,
+    dsc_name,
+    test_created as '24-25 Test Created',
+    bands_configured as '24-25 Bands Configured',
+    bands_applied as '24-25 Bands Applied',
+    -- case when bands_applied = 'Y' and string_agg(convert(nvarchar(max), st_name), ',') is null then 'All States' else string_agg(convert(nvarchar(max), st_name), ',')  END as 'States Applied'
+    string_agg(convert(nvarchar(max), st_name), ',')
+from data_table dt
+group by dsc_id, dsc_name, test_created, bands_configured, bands_applied
+order by 3 desc, 4 desc, 5 desc, 2 desc;
+
 
 -- 2022-23 vs. 2023-24
 
-with currentbands(dsc_id, dsc_name) as (
+;with currentbands(dsc_id, dsc_name) as (
 	select vt.datasetcategoryid, dsc.datasetcategoryname
 	from virtualtest vt with (nolock)
 		join datasetcategory dsc with (nolock)
@@ -57,11 +70,3 @@ from currentbands bands with (nolock)
 group by bands.dsc_id, bands.dsc_name
 order by 3 desc, 4 desc, 5 desc;
 
-
-select distinct DataSetCategoryID from PerformanceBandConfiguration with (nolock)
-where [Year] like '2024-25%'
-and districtid is null
-and stateid = 49
-
-select * from DataSetCategory with (nolock)
-where datasetcategoryid in (17,59,768,775,828,983)
