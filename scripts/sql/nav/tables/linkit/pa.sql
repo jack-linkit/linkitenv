@@ -1,47 +1,62 @@
-declare @districtID varchar(10) = '4760'
 -------------- NAVIGATOR TABLES ----------------------
 ----------- PA CORE & KEYSTONE LINKIT BMS ------------
-----------------------------------last update 12/03/21
+----------------------------------last update 09/10/24
+
+declare @districtid int
+set @districtid = 0000
 
 declare @bm table(School varchar(100), Grade varchar(5), Subject varchar(50), [Latest Results] date,
 [19-20 Form A] int, [19-20 Form B] int, [19-20 Form C] int,
 [20-21 Form A] int, [20-21 Form B] int, [20-21 Form C] int,
 [21-22 Form A] int, [21-22 Form B] int, [21-22 Form C] int,
 [22-23 Form A] int, [22-23 Form B] int, [22-23 Form C] int,
-[23-24 Form A] int, [23-24 Form B] int, [23-24 Form C] int
+[23-24 Form A] int, [23-24 Form B] int, [23-24 Form C] int,
+[24-25 Form A] int, [24-25 Form B] int, [24-25 Form C] int
 )
 declare @classbm table(School varchar(100), Grade varchar(5), Subject varchar(50), Teacher varchar(102), Class varchar(200),
-[23-24 Form A] int, [23-24 Form B] int, [23-24 Form C] int)
+[24-25 Form A] int, [24-25 Form B] int, [24-25 Form C] int)
+
+declare @k8banks_2425 table (BankID int) 
 declare @k8banks_2324 table (BankID int) 
 declare @k8banks_2223 table (BankID int) 
 declare @k8banks_2122 table (BankID int) 
 declare @k8banks_2021 table (BankID int)
 declare @k8banks_1920 table (BankID int)
 declare @k8banks_1819 table (BankID int)
+
+declare @msmathbanks_2425 table (BankID int)
 declare @msmathbanks_2324 table (BankID int)
 declare @msmathbanks_2223 table (BankID int)
 declare @msmathbanks_2122 table (BankID int)
 declare @msmathbanks_2021 table (BankID int)
 declare @msmathbanks_1920 table (BankID int)
 declare @msmathbanks_1819 table (BankID int)
+
+declare @hsmathbanks_2425 table (BankID int)
 declare @hsmathbanks_2324 table (BankID int)
 declare @hsmathbanks_2223 table (BankID int)
 declare @hsmathbanks_2122 table (BankID int)
 declare @hsmathbanks_2021 table (BankID int)
 declare @hsmathbanks_1920 table (BankID int)
 declare @hsmathbanks_1819 table (BankID int)
+
+declare @hsengbanks_2425  table (BankID int)
 declare @hsengbanks_2324  table (BankID int)
 declare @hsengbanks_2223  table (BankID int)
 declare @hsengbanks_2122  table (BankID int)
 declare @hsengbanks_2021  table (BankID int)
 declare @hsengbanks_1920  table (BankID int)
 declare @hsengbanks_1819  table (BankID int)
+
+declare @hslitbanks_2425  table (BankID int)
 declare @hslitbanks_2324  table (BankID int)
 declare @hslitbanks_2223  table (BankID int)
 declare @hslitbanks_2122  table (BankID int)
 declare @hslitbanks_2021  table (BankID int)
 declare @hslitbanks_1920  table (BankID int)
 declare @hslitbanks_1819  table (BankID int)
+
+declare @hsbiobanks_2425  table (BankID int)
 declare @hsbiobanks_2324  table (BankID int)
 declare @hsbiobanks_2223  table (BankID int)
 declare @hsbiobanks_2122  table (BankID int)
@@ -50,6 +65,9 @@ declare @hsbiobanks_1920  table (BankID int)
 declare @hsbiobanks_1819  table (BankID int)
 
 -- INSERTING BANKS -----------------------------------
+-- 24-25 K-8
+insert into @k8banks_2425 values (749604),(749605),(749606),(749612),(749613),(749614),(749615),(759525),(749617),(749731),(749732),(749733),(749734),(749735),(749740),(749741),(749742),(749743),(749744),(749745)
+
 -- 23-24 K-8
 insert into @k8banks_2324 values (542294),(542295),(542296),(542297),(542298),(542299),(542300),(542301),(542302),(542304),(542305),(542306),(542307),(542308),(542309),(542310),(542312),(542313),(542288),(542289)
 
@@ -69,6 +87,8 @@ insert into @k8banks_1920 values (128542),(128534),(128535),(128536),(128537),(1
 insert into @k8banks_1819 values (74605),(74606),(74607),(74608),(74609),(74610),(74611),(74612),(74613),(74614),(74615),(74616),(74617),
 								 (74618),(74619),(74620),(74621),(74622),(74626),(74627)
 
+-- 24-25 Keystone MS Alg
+insert into @msmathbanks_2425 values (749749)
 -- 23-24 Keystone MS Alg
 insert into @msmathbanks_2324 values (542293)
 -- 22-23 Keystone MS Alg 
@@ -80,6 +100,8 @@ insert into @msmathbanks_2021 values (214474)
 -- 19-20 Keystone MS Alg
 insert into @msmathbanks_1920 values (128634)
 
+-- 24-25 Keystone HS Alg
+insert into @hsmathbanks_2425 values (749748)
 -- 23-24 Keystone HS Alg
 insert into @hsmathbanks_2324 values (542292)
 -- 22-23 Keystone HS Alg 
@@ -91,6 +113,8 @@ insert into @hsmathbanks_2021 values (206010)
 -- 19-20 Keystone HS Alg
 insert into @hsmathbanks_1920 values (128633)
 
+-- 24-25 Keystone HS Lit
+insert into @hslitbanks_2425 values (749747)
 -- 23-24 Keystone HS Lit
 insert into @hslitbanks_2324 values (542291)
 -- 22-23 Keystone HS Lit 
@@ -102,6 +126,8 @@ insert into @hslitbanks_2021 values (206012)
 -- 19-20 Keystone HS Lit
 insert into @hslitbanks_1920 values (128635)
 
+-- 24-25 HS Eng (non-Keystone)
+insert into @hsengbanks_2425 values (749618)
 -- 23-24 HS Eng (non-Keystone)
 insert into @hsengbanks_2324 values (542303)
 -- 22-23 HS Eng (non-Keystone)
@@ -111,6 +137,8 @@ insert into @hsengbanks_2122 values (273615)
 -- 20-21 HS Eng (non-Keystone)
 insert into @hsengbanks_2021 values (202922)
 
+-- 24-25 Keystone HS Bio
+insert into @hsbiobanks_2425 values (749746)
 -- 23-24 Keystone HS Bio
 insert into @hsbiobanks_2324 values (542290)
 -- 22-23 Keystone HS Bio 
@@ -139,21 +167,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @k8banks_2425 [2425] on b.BankID = [2425].BankID
 left join @k8banks_2324 [2324] on b.BankID = [2324].BankID
 left join @k8banks_2223 [2223] on b.BankID = [2223].BankID
 left join @k8banks_2122 [2122] on b.BankID = [2122].BankID
 left join @k8banks_2021 [2021] on b.BankID = [2021].BankID
 left join @k8banks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name not like '%Prior Gr%' and g.GradeID not in (52,33) --exclude Gr 6-8, 9-12
-and (vt.BankID in (select * from @k8banks_2324) or vt.BankID in (select * from @k8banks_2223) or vt.BankID in (select * from @k8banks_2122) or vt.BankID in (select * from @k8banks_2021) 
-  or vt.BankID in (select * from @k8banks_1920))
+and (vt.BankID in (select * from @k8banks_2425) 
+or vt.BankID in (select * from @k8banks_2324) 
+or vt.BankID in (select * from @k8banks_2223) 
+or vt.BankID in (select * from @k8banks_2122) 
+or vt.BankID in (select * from @k8banks_2021) 
+or vt.BankID in (select * from @k8banks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone MS Alg I
@@ -172,20 +208,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on b.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @msmathbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @msmathbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @msmathbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @msmathbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @msmathbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @msmathbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @msmathbanks_2324) or vt.BankID in (select * from @msmathbanks_2223) or vt.BankID in (select * from @msmathbanks_2122) or vt.BankID in (select * from @msmathbanks_2021) or vt.BankID in (select * from @msmathbanks_1920))
+and (vt.BankID in (select * from @msmathbanks_2425) 
+or vt.BankID in (select * from @msmathbanks_2324) 
+or vt.BankID in (select * from @msmathbanks_2223) 
+or vt.BankID in (select * from @msmathbanks_2122) 
+or vt.BankID in (select * from @msmathbanks_2021) 
+or vt.BankID in (select * from @msmathbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Alg I
@@ -204,20 +249,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsmathbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsmathbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsmathbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsmathbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsmathbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hsmathbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsmathbanks_2324) or vt.BankID in (select * from @hsmathbanks_2223) or vt.BankID in (select * from @hsmathbanks_2122) or vt.BankID in (select * from @hsmathbanks_2021) or vt.BankID in (select * from @hsmathbanks_1920))
+and (vt.BankID in (select * from @hsmathbanks_2425)
+or vt.BankID in (select * from @hsmathbanks_2324) 
+or vt.BankID in (select * from @hsmathbanks_2223) 
+or vt.BankID in (select * from @hsmathbanks_2122) 
+or vt.BankID in (select * from @hsmathbanks_2021) 
+or vt.BankID in (select * from @hsmathbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Alg I - Mod I
@@ -236,20 +290,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsmathbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsmathbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsmathbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsmathbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsmathbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hsmathbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Module I:%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsmathbanks_2324) or vt.BankID in (select * from @hsmathbanks_2223) or vt.BankID in (select * from @hsmathbanks_2122) or vt.BankID in (select * from @hsmathbanks_2021) or vt.BankID in (select * from @hsmathbanks_1920))
+and (vt.BankID in (select * from @hsmathbanks_2425) 
+or vt.BankID in (select * from @hsmathbanks_2324) 
+or vt.BankID in (select * from @hsmathbanks_2223) 
+or vt.BankID in (select * from @hsmathbanks_2122) 
+or vt.BankID in (select * from @hsmathbanks_2021) 
+or vt.BankID in (select * from @hsmathbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Alg I - Mod II
@@ -268,20 +331,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsmathbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsmathbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsmathbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsmathbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsmathbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hsmathbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Module II:%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsmathbanks_2324) or vt.BankID in (select * from @hsmathbanks_2223) or vt.BankID in (select * from @hsmathbanks_2122) or vt.BankID in (select * from @hsmathbanks_2021) or vt.BankID in (select * from @hsmathbanks_1920))
+and (vt.BankID in (select * from @hsmathbanks_2425) 
+or vt.BankID in (select * from @hsmathbanks_2324) 
+or vt.BankID in (select * from @hsmathbanks_2223) 
+or vt.BankID in (select * from @hsmathbanks_2122) 
+or vt.BankID in (select * from @hsmathbanks_2021) 
+or vt.BankID in (select * from @hsmathbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Lit
@@ -300,20 +372,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hslitbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hslitbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hslitbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hslitbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hslitbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hslitbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hslitbanks_2324) or vt.BankID in (select * from @hslitbanks_2223) or vt.BankID in (select * from @hslitbanks_2122) or vt.BankID in (select * from @hslitbanks_2021) or vt.BankID in (select * from @hslitbanks_1920))
+and (vt.BankID in (select * from @hslitbanks_2425)
+or vt.BankID in (select * from @hslitbanks_2324) 
+or vt.BankID in (select * from @hslitbanks_2223) 
+or vt.BankID in (select * from @hslitbanks_2122) 
+or vt.BankID in (select * from @hslitbanks_2021) 
+or vt.BankID in (select * from @hslitbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Lit - Mod I
@@ -332,20 +413,28 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hslitbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hslitbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hslitbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hslitbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hslitbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hslitbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Module I:%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hslitbanks_2324) or vt.BankID in (select * from @hslitbanks_2223) or vt.BankID in (select * from @hslitbanks_2122) or vt.BankID in (select * from @hslitbanks_2021) or vt.BankID in (select * from @hslitbanks_1920))
+and (vt.BankID in (select * from @hslitbanks_2425) 
+or vt.BankID in (select * from @hslitbanks_2223) 
+or vt.BankID in (select * from @hslitbanks_2122) 
+or vt.BankID in (select * from @hslitbanks_2021) 
+or vt.BankID in (select * from @hslitbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Lit - Mod II
@@ -364,20 +453,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hslitbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hslitbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hslitbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hslitbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hslitbanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hslitbanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Module II:%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hslitbanks_2324) or vt.BankID in (select * from @hslitbanks_2223) or vt.BankID in (select * from @hslitbanks_2122) or vt.BankID in (select * from @hslitbanks_2021) or vt.BankID in (select * from @hslitbanks_1920))
+and (vt.BankID in (select * from @hslitbanks_2425)
+or vt.BankID in (select * from @hslitbanks_2324) 
+or vt.BankID in (select * from @hslitbanks_2223) 
+or vt.BankID in (select * from @hslitbanks_2122) 
+or vt.BankID in (select * from @hslitbanks_2021) 
+or vt.BankID in (select * from @hslitbanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Eng I (non-Keystone)
@@ -394,19 +492,27 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsengbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsengbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsengbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsengbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsengbanks_2021 [2021] on b.BankID = [2021].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Eng I %' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsengbanks_2324) or vt.BankID in (select * from @hsengbanks_2223) or vt.BankID in (select * from @hsengbanks_2122) or vt.BankID in (select * from @hsengbanks_2021))
+and (vt.BankID in (select * from @hsengbanks_2425)
+or vt.BankID in (select * from @hsengbanks_2324) 
+or vt.BankID in (select * from @hsengbanks_2223) 
+or vt.BankID in (select * from @hsengbanks_2122) 
+or vt.BankID in (select * from @hsengbanks_2021))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Eng III (non-Keystone)
@@ -423,19 +529,27 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsengbanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsengbanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsengbanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsengbanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsengbanks_2021 [2021] on b.BankID = [2021].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Eng III %' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsengbanks_2324) or vt.BankID in (select * from @hsengbanks_2223) or vt.BankID in (select * from @hsengbanks_2122) or vt.BankID in (select * from @hsengbanks_2021))
+and (vt.BankID in (select * from @hsengbanks_2425)
+or vt.BankID in (select * from @hsengbanks_2324) 
+or vt.BankID in (select * from @hsengbanks_2223) 
+or vt.BankID in (select * from @hsengbanks_2122) 
+or vt.BankID in (select * from @hsengbanks_2021))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Bio
@@ -454,20 +568,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsbiobanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsbiobanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsbiobanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsbiobanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsbiobanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hsbiobanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsbiobanks_2324) or vt.BankID in (select * from @hsbiobanks_2223) or vt.BankID in (select * from @hsbiobanks_2122) or vt.BankID in (select * from @hsbiobanks_2021) or vt.BankID in (select * from @hsbiobanks_1920))
+and (vt.BankID in (select * from @hsbiobanks_2425) 
+or vt.BankID in (select * from @hsbiobanks_2324) 
+or vt.BankID in (select * from @hsbiobanks_2223)
+or vt.BankID in (select * from @hsbiobanks_2122) 
+or vt.BankID in (select * from @hsbiobanks_2021) 
+or vt.BankID in (select * from @hsbiobanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Bio Mod I
@@ -486,20 +609,29 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsbiobanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsbiobanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsbiobanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsbiobanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsbiobanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hsbiobanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Module I:%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsbiobanks_2324) or vt.BankID in (select * from @hsbiobanks_2223) or vt.BankID in (select * from @hsbiobanks_2122) or vt.BankID in (select * from @hsbiobanks_2021) or vt.BankID in (select * from @hsbiobanks_1920))
+and (vt.BankID in (select * from @hsbiobanks_2425)
+or vt.BankID in (select * from @hsbiobanks_2324) 
+or vt.BankID in (select * from @hsbiobanks_2223) 
+or vt.BankID in (select * from @hsbiobanks_2122) 
+or vt.BankID in (select * from @hsbiobanks_2021) 
+or vt.BankID in (select * from @hsbiobanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 -- Keystone HS Bio Mod II
@@ -518,27 +650,36 @@ sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form B%' then 1 el
 sum(case when vt.BankID in ([2223].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
-sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
+sum(case when vt.BankID in ([2324].BankID) and vt.Name like '%Form C%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form A%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form B%' then 1 else 0 end),
+sum(case when vt.BankID in ([2425].BankID) and vt.Name like '%Form C%' then 1 else 0 end)
 from TestResult tr with (nolock)
 Join School sc with (nolock) on sc.SchoolID = tr.SchoolID
 Join VirtualTest vt with (nolock) on vt.VirtualTestID = tr.VirtualTestID
 Join Bank b with (nolock) on B.BankID = vt.BankID
 Join [Subject] sub with (nolock) on sub.SubjectID = B.SubjectID
 Join Grade g with (nolock) on g.GradeID = sub.GradeID
+left join @hsbiobanks_2425 [2425] on b.BankID = [2425].BankID
 left join @hsbiobanks_2324 [2324] on b.BankID = [2324].BankID
 left join @hsbiobanks_2223 [2223] on b.BankID = [2223].BankID
 left join @hsbiobanks_2122 [2122] on b.BankID = [2122].BankID
 left join @hsbiobanks_2021 [2021] on b.BankID = [2021].BankID
 left join @hsbiobanks_1920 [1920] on b.BankID = [1920].BankID
 where sc.DistrictID = @districtid and vt.Name like '%Module II:%' and vt.Name not like '%Prior Gr%'
-and (vt.BankID in (select * from @hsbiobanks_2324) or vt.BankID in (select * from @hsbiobanks_2223) or vt.BankID in (select * from @hsbiobanks_2122) or vt.BankID in (select * from @hsbiobanks_2021) or vt.BankID in (select * from @hsbiobanks_1920))
+and (vt.BankID in (select * from @hsbiobanks_2425) 
+or vt.BankID in (select * from @hsbiobanks_2324) 
+or vt.BankID in (select * from @hsbiobanks_2223) 
+or vt.BankID in (select * from @hsbiobanks_2122)
+or vt.BankID in (select * from @hsbiobanks_2021)
+or vt.BankID in (select * from @hsbiobanks_1920))
 group by g.Name, sub.Name, sc.Name
 
 
 -- INSERTING CLASS -----------------------------------
 -- K-8
 insert into @classbm
-select sc.Name, g.Name, sub.Name, CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, sub.Name, u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -551,12 +692,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and g.GradeID not in (52,33) --exclude Gr 6-8, 9-12
-and vt.BankID in (select * from @k8banks_2324)
+and vt.BankID in (select * from @k8banks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone MS Alg I
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Algebra I', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Algebra I', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -569,12 +710,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%'
-and vt.BankID in (select * from @msmathbanks_2324)
+and vt.BankID in (select * from @msmathbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Alg I
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Algebra I', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Algebra I', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -587,12 +728,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%'
-and vt.BankID in (select * from @hsmathbanks_2324)
+and vt.BankID in (select * from @hsmathbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Alg I Mod I
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Algebra I Module I', CONCAT('"', u.FullName, '"')e, c.Name,
+select sc.Name, g.Name, 'Keystone Algebra I Module I', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -605,12 +746,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Module I:%'
-and vt.BankID in (select * from @hsmathbanks_2324)
+and vt.BankID in (select * from @hsmathbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Alg I Mod II
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Algebra I Module II', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Algebra I Module II', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -623,12 +764,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Module II:%'
-and vt.BankID in (select * from @hsmathbanks_2324)
+and vt.BankID in (select * from @hsmathbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Lit
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Literature',CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Literature', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -641,12 +782,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%'
-and vt.BankID in (select * from @hslitbanks_2324)
+and vt.BankID in (select * from @hslitbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Lit Mod I
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Literature Module I', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Literature Module I', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -659,12 +800,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Module I:%'
-and vt.BankID in (select * from @hslitbanks_2324)
+and vt.BankID in (select * from @hslitbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Lit Mod II
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Literature Module II', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Literature Module II', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -677,12 +818,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Module II:%'
-and vt.BankID in (select * from @hslitbanks_2324)
+and vt.BankID in (select * from @hslitbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Eng I (non-Keystone)
 insert into @classbm
-select sc.Name, g.Name, 'LinkIt! HS English I', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'LinkIt! HS English I', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -695,12 +836,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Eng I %'
-and vt.BankID in (select * from @hsengbanks_2324)
+and vt.BankID in (select * from @hsengbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Eng III (non-Keystone)
 insert into @classbm
-select sc.Name, g.Name, 'LinkIt! HS English III', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'LinkIt! HS English III', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -713,12 +854,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Eng III %'
-and vt.BankID in (select * from @hsengbanks_2324)
+and vt.BankID in (select * from @hsengbanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Bio
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Biology', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Biology', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -731,12 +872,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name not like '%Module%'
-and vt.BankID in (select * from @hsbiobanks_2324)
+and vt.BankID in (select * from @hsbiobanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Bio
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Biology Module I', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Biology Module I', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -749,12 +890,12 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Module I:%'
-and vt.BankID in (select * from @hsbiobanks_2324)
+and vt.BankID in (select * from @hsbiobanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 -- Keystone HS Bio
 insert into @classbm
-select sc.Name, g.Name, 'Keystone Biology Module II', CONCAT('"', u.FullName, '"'), c.Name,
+select sc.Name, g.Name, 'Keystone Biology Module II', u.FullName, c.Name,
 sum(case when vt.Name like '%Form A%' then 1 else 0 end),
 sum(case when vt.Name like '%Form B%' then 1 else 0 end),
 sum(case when vt.Name like '%Form C%' then 1 else 0 end)
@@ -767,7 +908,7 @@ Join Grade g with (nolock) on g.GradeID = sub.GradeID
 Join Class c with (nolock) on C.ClassID = tr.ClassID
 Join [User] u with (nolock) on U.UserID = C.UserID
 where sc.DistrictID = @districtid and vt.Name like '%Module II:%'
-and vt.BankID in (select * from @hsbiobanks_2324)
+and vt.BankID in (select * from @hsbiobanks_2425)
 group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 
 
@@ -775,9 +916,10 @@ group by sc.Name, g.Name, sub.Name, u.FullName, c.Name
 -- DISTRICT -------------------------
 select Grade, Subject, max([Latest Results]) as [Latest Results],
 sum([22-23 Form A]) as [22-23 Form A], sum([22-23 Form B]) as [22-23 Form B], sum([22-23 Form C]) as [22-23 Form C],
-sum([23-24 Form A]) as [23-24 Form A], sum([23-24 Form B]) as [23-24 Form B], sum([23-24 Form C]) as [23-24 Form C]
+sum([23-24 Form A]) as [23-24 Form A], sum([23-24 Form B]) as [23-24 Form B], sum([23-24 Form C]) as [23-24 Form C],
+sum([24-25 Form A]) as [24-25 Form A], sum([24-25 Form B]) as [24-25 Form B], sum([24-25 Form C]) as [24-25 Form C]
 from @bm
-where ([22-23 Form A]+[22-23 Form B]+[22-23 Form C]+[23-24 Form A]+[23-24 Form B]+[23-24 Form C])>=0
+where ([22-23 Form A]+[22-23 Form B]+[22-23 Form C]+[23-24 Form A]+[23-24 Form B]+[23-24 Form C]+[24-25 Form A]+[24-25 Form B]+[24-25 Form C])>=0
 group by Grade, Subject
 order by case when Grade = 'K' then 0
 			  when Grade = '6-8' then 9 
@@ -788,9 +930,10 @@ order by case when Grade = 'K' then 0
 -- SCHOOL ---------------------------
 select School, Grade, Subject, max([Latest Results]) as [Latest Results],
 sum([22-23 Form A]) as [22-23 Form A], sum([22-23 Form B]) as [22-23 Form B], sum([22-23 Form C]) as [22-23 Form C],
-sum([23-24 Form A]) as [23-24 Form A], sum([23-24 Form B]) as [23-24 Form B], sum([23-24 Form C]) as [23-24 Form C]
+sum([23-24 Form A]) as [23-24 Form A], sum([23-24 Form B]) as [23-24 Form B], sum([23-24 Form C]) as [23-24 Form C],
+sum([24-25 Form A]) as [24-25 Form A], sum([24-25 Form B]) as [24-25 Form B], sum([24-25 Form C]) as [24-25 Form C]
 from @bm
-where ([22-23 Form A]+[22-23 Form B]+[22-23 Form C]+[23-24 Form A]+[23-24 Form B]+[23-24 Form C])>=0
+where ([22-23 Form A]+[22-23 Form B]+[22-23 Form C]+[23-24 Form A]+[23-24 Form B]+[23-24 Form C]+[24-25 Form A]+[24-25 Form B]+[24-25 Form C])>=0
 group by School, Grade, Subject
 order by School,
 		 case when Grade = 'K' then 0
@@ -814,7 +957,8 @@ sum([19-20 Form A]) as [19-20 A], sum([19-20 Form B]) as [19-20 B], sum([19-20 F
 sum([20-21 Form A]) as [20-21 A], sum([20-21 Form B]) as [20-21 B], sum([20-21 Form C]) as [20-21 C],
 sum([21-22 Form A]) as [21-22 A], sum([21-22 Form B]) as [21-22 B], sum([21-22 Form C]) as [21-22 C],
 sum([22-23 Form A]) as [22-23 A], sum([22-23 Form B]) as [22-23 B], sum([22-23 Form C]) as [22-23 C],
-sum([23-24 Form A]) as [23-24 A], sum([23-24 Form B]) as [23-24 B], sum([23-24 Form C]) as [23-24 C]
+sum([23-24 Form A]) as [23-24 A], sum([23-24 Form B]) as [23-24 B], sum([23-24 Form C]) as [23-24 C],
+sum([24-25 Form A]) as [24-25 A], sum([24-25 Form B]) as [24-25 B], sum([24-25 Form C]) as [24-25 C]
 from @bm
 group by Grade, Subject
 order by case when Grade = 'K' then 0
