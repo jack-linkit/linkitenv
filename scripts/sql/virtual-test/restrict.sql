@@ -1,7 +1,8 @@
+
 declare @banks table (bankid int)
 insert into @banks
 select BankID from Bank with (nolock)
-where BankID in (644063,644064,644065,644066,644068,644069,644070,644071,644072,644073,644079,644080,644081,644082,644083,644084,644085,644086,644088,646350,646348,644076,644074,644075,644077)
+where BankID in (757156,757157,757158,757159,757160,757161,757162,757193,757219,757220,757221,757222,757223,757225,757226,757227,757228,757229,757230,757231,757232)
 
 declare @tests table (vtid int)
 insert into @tests (vtid)
@@ -9,14 +10,15 @@ select VirtualTestID from VirtualTest vt with (nolock)
     join @banks bank on vt.BankID = bank.bankid
 where name not like '%Form A%'
 
-declare @districtID int = 6501
+declare @districtID int = 5529
 
 declare @userID int = 4940734
 
 begin tran
 
+    delete from bankdistrict where districtid = @districtid and bankid in (select bankid from @banks)
     insert into bankdistrict (BankId, DistrictID, StartDate, EndDate, EditedByUserID, BankDistrictAccessID)
-    select BankID, @districtID, '2023-07-31', '2024-07-31', 4940734, 1 from @banks b
+    select BankID, @districtID, '2024-07-31', '2025-07-31', 4940734, 1 from @banks b
 
 
 	-- Restrict test ASSIGN for all roles
@@ -67,7 +69,3 @@ begin tran
     from @tests
 
 rollback tran
-
-select * from XLITestRestrictionModuleRole xli with (nolock)
-    join @tests vt on xli.RestrictedObjectID = vt.vtid
-where xli.PublishedLevelID = 6501
