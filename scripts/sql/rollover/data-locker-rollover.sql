@@ -242,4 +242,24 @@ begin
 	WHERE BankID IN (SELECT OldID FROM @MyBankRef);
 end
 
-commit tran
+rollback tran
+
+/*
+DELETE FROM BankDistrict
+
+	WHERE DistrictID = 0000
+
+	AND BankID IN (BankID1, BankID2,...);
+
+	DELETE FROM BankSchool
+
+	WHERE SchoolID IN (Select SchoolID FROM School with (nolock) WHERE DistrictID = 0000)
+
+	AND BankID IN (BankID1, BankID2,...);
+
+	UPDATE Bank
+
+	SET Archived = 1
+
+	WHERE BankID IN (BankID1, BankID2,...);
+*/
