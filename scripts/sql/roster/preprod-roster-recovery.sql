@@ -20,3 +20,4 @@ from districtterm dt with (nolock)
     join student s with (nolock) on s.studentid = cs.studentid
     join school sch with (nolock) on c.SchoolID = sch.SchoolID
 where dt.DistrictTermID = 125581
+and c.ClassTypeID = 1
