@@ -1,4 +1,4 @@
 base_url="https://mail.google.com/mail/u/0/#search/"
 district_id=$(dlookup $1)
 
-echo "$base_url$district_id" | xargs -I{} explorer.exe {}
+echo "$base_url$district_id" 
