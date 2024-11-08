@@ -18,15 +18,19 @@ def generate_insert_statement(table_name, csv_file):
             for col in columns:
                 value = row[col]
                 
-                # Handle string values by wrapping them in quotes, escape single quotes
-                if isinstance(value, str):
+                # Handle "NULL" string as SQL NULL (no quotes)
+                if value == "NULL":
+                    values.append('NULL')
+                # Handle actual NULL or empty string as SQL NULL
+                elif value is None or value == '':
+                    values.append('NULL')
+                elif isinstance(value, str):  # Handle string values with quotes
                     value = value.replace("'", "''")  # Escape single quotes
                     value = f"'{value}'"
-                elif value == '':  # Handle empty strings as NULL
-                    value = 'NULL'
-                
-                values.append(value)
-            
+                    values.append(value)
+                else:  # Handle numeric or other types directly
+                    values.append(str(value))
+
             # Add the values to the batch
             batch_values.append(f"({', '.join(values)})")
             
