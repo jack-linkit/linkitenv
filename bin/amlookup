@@ -1,0 +1,52 @@
+#!/bin/bash
+if ! command -v jq &> /dev/null
+then
+    echo "jq could not be found. Please install it to continue."
+    exit
+fi
+
+LINKIT_DISTRICTS_PATH=$(jq -r '.linkitDistrictsFile' $HOME/linkitenv/config.json)
+
+if [ -z "$LINKIT_DISTRICTS_PATH" ]; then
+    echo "Error: \$LINKIT_DISTRICTS_PATH is not set."
+    exit 1
+fi
+
+if ! test -f "$LINKIT_DISTRICTS_PATH"; then
+    echo "Error: File does not exist: $LINKIT_DISTRICTS_PATH"
+    exit 1
+fi
+
+
+if [ -z "$LINKIT_DISTRICTS_PATH" ]; then
+    echo "Error: \$LINKIT_DISTRICTS_PATH is not set."
+    exit 1
+fi
+
+if ! test -f "$LINKIT_DISTRICTS_PATH"; then
+    echo "Error: File does not exist: $LINKIT_DISTRICTS_PATH"
+    exit 1
+fi
+
+search_term=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+
+output=$(awk -F',' -v search_term="$search_term" '
+    NR > 1 && (tolower($1) ~ search_term || tolower($4) ~ search_term) {
+        gsub(/"/, "", $9)
+        if (matches != "" && $9 != "") {
+            matches = matches "\n" $9
+        } else {
+            matches = $9
+        }
+    }
+    END {
+        if (matches == "") {
+            print "No matching district found."
+            exit 1
+        }
+        printf "%s", matches
+    }
+' "$LINKIT_DISTRICTS_PATH")
+
+echo -n "$output" | tr -d '"'
+
