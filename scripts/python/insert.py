@@ -14,7 +14,6 @@ def convert_to_date(date_str):
 
 with sys.stdin as f:
 	reader = csv.reader(f, delimiter='\t')
-	next(reader)
 	for row in reader:
 		for i,x in enumerate(row):
 			if convert_to_date(x) is not None:

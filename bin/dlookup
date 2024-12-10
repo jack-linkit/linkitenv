@@ -28,15 +28,29 @@ if ! test -f "$LINKIT_DISTRICTS_PATH"; then
     exit 1
 fi
 
+if [[ $# -eq 0 ]]; then
+  search_term=""  # Default value for search_term if no arguments are given
+else
+  search_term="$1"
+fi
+
 search_term=$(echo "$1" | tr '[:upper:]' '[:lower:]')
 
 output=$(awk -F',' -v search_term="$search_term" '
-    NR > 1 && (tolower($1) ~ search_term || tolower($4) ~ search_term) {
+    NR > 1 {
         gsub(/"/, "", $3)
-        if (matches != "" && $3 != "") {
-            matches = matches "\n" $3
+        if (search_term == "") {
+            # If search_term is blank, output all rows unless $3 is blank
+            if ($3 != "") {
+                matches = (matches ? matches "\n" : "") $3
+            }
         } else {
-            matches = $3
+            # If search_term is not blank, match on $1 or $4
+            if (tolower($1) ~ search_term || tolower($4) ~ search_term) {
+                if ($3 != "") {
+                    matches = (matches ? matches "\n" : "") $3
+                }
+            }
         }
     }
     END {
