@@ -1,5 +1,6 @@
 /* Script to identify pairs of duplicate students (AltCode) */
 DECLARE @DistrictID int = 4760;
+DECLARE @ListOfStudentIDMapping [support].[ListOfStudentIDMapping];
 
 WITH StudentData AS (
     SELECT 
@@ -42,13 +43,9 @@ Duplicates AS (
         RowNum > 1
 )
 -- Fetch duplicates only
+INSERT INTO @ListOfStudentIDMapping (StudentIDKeep, StudentIDDelete)
 SELECT
-    o.StudentID AS 'Orig StudentID',
-    o.FullName AS 'Orig FullName',
-    d.StudentID AS 'Dupe StudentID',
-    d.FullName AS 'Dupe FullName',
-    o.AltCode,
-    dist.Name AS DistrictName
+    o.StudentID, d.StudentID
 FROM 
     Originals o
 JOIN 
@@ -56,3 +53,8 @@ JOIN
 JOIN 
     District dist WITH (NOLOCK) ON o.DistrictID = dist.DistrictID;
 
+begin tran
+
+EXEC [support].[MergeDuplicatedStudentsBySpecific] @DistrictID =@DistrictID, @ListOfStudentIDMapping = @ListOfStudentIDMapping 
+
+rollback tran
