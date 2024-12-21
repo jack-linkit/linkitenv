@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import argparse
+import sys
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+BIN_DIR = os.path.join(BASE_DIR, "bin")
+
+def execute_binary(binary_name, args):
+    """Execute a binary file from the /bin directory."""
+    binary_path = os.path.join(BIN_DIR, binary_name)
+    if not os.path.exists(binary_path):
+        print(f"Error: {binary_name} not found in /bin.")
+        sys.exit(1)
+    try:
+        result = subprocess.run([binary_path] + args, check=True, text=True, capture_output=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Execution failed: {e.stderr}")
+
+def copy_sql(file_name):
+    """Copy SQL script to clipboard."""
+    file_path = os.path.join(SCRIPTS_DIR, "sql", file_name)
+    if not os.path.exists(file_path):
+        print(f"Error: {file_name} not found in {SCRIPTS_DIR}/sql.")
+        sys.exit(1)
+    with open(file_path, "r") as f:
+        content = f.read()
+    subprocess.run("pbcopy", text=True, input=content)
+    print(f"Copied {file_name} to clipboard.")
+
+def run_python(script_name, data_file=None):
+    """Run a Python script on a local data file."""
+    script_path = os.path.join(SCRIPTS_DIR, "python", script_name)
+    if not os.path.exists(script_path):
+        print(f"Error: {script_name} not found in {SCRIPTS_DIR}/python.")
+        sys.exit(1)
+    command = ["python", script_path]
+    if data_file:
+        command.append(data_file)
+    subprocess.run(command)
+
+def list_files(directory, extension=None):
+    """List files in a directory with an optional extension filter."""
+    files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+    if extension:
+        files = [f for f in files if f.endswith(extension)]
+    for file in files:
+        print(file)
+
+def main():
+    parser = argparse.ArgumentParser(description="LinkOps CLI Tool")
+    parser.add_argument("command", help="Command to execute (subcommands or binaries)")
+    parser.add_argument("args", nargs=argparse.REMAINDER, help="Additional arguments for the command")
+    parsed_args = parser.parse_args()
+
+    command = parsed_args.command
+    additional_args = parsed_args.args
+
+    if command in os.listdir(BIN_DIR):
+        execute_binary(command, additional_args)
+    else:
+        if command == "copy-sql":
+            if not additional_args:
+                print("Error: No SQL file specified.")
+                sys.exit(1)
+            sql_file = additional_args[0]
+            sql_path = os.path.join(SCRIPTS_DIR, "sql", sql_file)
+            if os.path.exists(sql_path):
+                with open(sql_path, "r") as f:
+                    subprocess.run("pbcopy", text=True, input=f.read())
+                print(f"Copied {sql_file} to clipboard.")
+            else:
+                print(f"Error: {sql_file} not found in /scripts/sql.")
+        elif command == "run-python":
+            if not additional_args:
+                print("Error: No Python script specified.")
+                sys.exit(1)
+            python_file = additional_args[0]
+            python_path = os.path.join(SCRIPTS_DIR, "python", python_file)
+            if os.path.exists(python_path):
+                subprocess.run(["python3", python_path] + additional_args[1:])
+            else:
+                print(f"Error: {python_file} not found in /scripts/python.")
+        elif command == "list-files":
+            for root, _, files in os.walk(BASE_DIR):
+                for file in files:
+                    print(os.path.relpath(os.path.join(root, file), BASE_DIR))
+        else:
+            print(f"Error: Unknown command '{command}'.")
+            parser.print_help()
+            sys.exit(1)
+
+if __name__ == "__main__":
+    main()
