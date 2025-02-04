@@ -4,8 +4,8 @@ set username [exec bash -c "cat $env(HOME)/linkitenv/config.json | jq -r '.ftpUs
 
 set password [exec bash -c "cat $env(HOME)/linkitenv/config.json | jq -r '.ftpPassword'"]
 
-spawn sftp $username
-expect "jack@ftp.linkit.com's password: "
+spawn sftp $username@ftp.linkit.com
+expect "Jack@ftp.linkit.com's password: "
 send "$password\r"
 interact
 
