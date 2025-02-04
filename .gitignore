@@ -1,3 +1,4 @@
 config.json
 .DS_STORE
 data/*.csv
+__pycache__

@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+xargs -I{} open -u {}
